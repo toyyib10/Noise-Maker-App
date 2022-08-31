@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="bootstrap.css">
+  <title>Document</title>
+</head>
+<body class="">
+  <div class="mt-5 col-10 col-md-4 p-0 container d-flex flex-column align-items-center shadow-lg justify-content-center" style="height: 500px;">
+    <div style="height: 414px; overflow-y:auto; margin-bottom: 20px;" class="w-100 p-0">
+      <% if(message != "") { %>
+        <div class="fs-1"><%= message %></div>
+      <% } else{ %>
+        <table class="table table-striped table-bordered p-0 m-0">
+          <thead style="background-color:white;">
+            <tr>
+              <td>S/N</td>
+              <td>Name</td>
+              <td>Times</td>
+              <td>Add</td>
+              <td>Sub</td>
+              <td>Cancel</td>
+            </tr>
+          </thead>
+          <% info.map((item , index)=> { %>
+            <tr>
+              <td scope="row"><%= index + 1 %></td>
+              <td scope="col"><%= item.name %></td>
+              <td scope="col"><%= item.value %></td>
+              <td scope="col">
+                <form action="/add" method="POST">
+                  <input type="hidden" name="name" value="<%= item.name %>">
+                  <input type="hidden" name="value" value="<%= item.value %>">
+                  <input type="hidden" name="id" value="<%= item._id %>"/>
+                  <button class="btn btn-danger">+</button></td>
+                </form>
+              <td scope="col">
+                <form action="/sub" method="post">
+                  <input type="hidden" name="name" value="<%= item.name %>">
+                  <input type="hidden" name="value" value="<%= item.value %>">
+                  <input type="hidden" name="id" value="<%= item._id %>"/>
+                  <button class="btn btn-warning">-</button></td>
+                </form>
+              </td>
+              <td scope="col">
+                <form action="/del" method="post">
+                  <input type="hidden" name="name" value="<%= item.name %>">
+                  <input type="hidden" name="value" value="<%= item.value %>">
+                  <input type="hidden" name="id" value="<%= item._id %>"/>
+                  <button class="btn btn-secondary">X</button>
+                </form>
+              </td>
+            </tr>
+         <% }) %>
+        </table>
+      <% } %>
+    </div>
+    <div>
+      <button onclick="cl()" class="btn btn-success fs-4 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModalDefault">Add noise maker</button>
+    </div>
+    <div class="modal fade show" id="exampleModalDefault" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add Name</h5>
+            <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="can()"></button>
+          </div>
+          <form action="/addname" method="post">
+            <div class="modal-body">
+              <input type="text" class="w-100 form-control form-control-lg" name="name" placeholder="name">
+              <input type="hidden" class="w-100 form-control form-control-lg" name="value" value="1" placeholder="value">
+            </div>
+            <div class="modal-footer d-flex align-items-center justify-content-center">
+              <button type="submit" class="btn btn-danger fs-5">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const cl = () => {
+      exampleModalDefault.style.display = "block";
+    }
+    const can = () => {
+      exampleModalDefault.style.display = "none";
+    }
+  </script>
+</body>
+</html>
